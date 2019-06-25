@@ -7,17 +7,20 @@ console.log(["static path",staticMapPath]);
 var staticMap = require(staticMapPath);
 console.log(["static",staticMap]);
  
-function fnStaticDetermine (clientMac, req){
+function StaticDetermine (clientMac, req){
 	console.log (["static" , clientMac, req]);
+	console.log("existing static determine")
 	return null;
 }
+
+var fnCallback = new StaticDetermine();
 
 var s = dhcp.createServer({
   // System settings
   range: [
     "11.10.214.50", "11.10.214.150"
   ],
-  static: new fnStaticDetermine(),
+  static: fnCallback,
  
   // Option settings (there are MUCH more)
   netmask: '255.0.0.0',
