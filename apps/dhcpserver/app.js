@@ -1,6 +1,10 @@
 var dhcp = require('dhcp');
+var path = require('path');
+
 var environment = process.env.ENV || "office";
-var staticMap = require(__dirname + "../deploy/" + environment + "/static.json");
+var staticMapPath = path.normalize(__dirname + "../deploy/" + environment + "/static.json");
+console.log(["static path",staticMapPath]);
+var staticMap = require(staticMapPath);
 console.log(["static",staticMap]);
  
 function fnStaticDetermine (clientMac, req){
