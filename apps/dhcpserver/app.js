@@ -20,7 +20,7 @@ var s = dhcp.createServer({
   range: [
     "11.10.214.50", "11.10.214.150"
   ],
-  static: fnCallback,
+  static: StaticDetermine,
  
   // Option settings (there are MUCH more)
   netmask: '255.0.0.0',
