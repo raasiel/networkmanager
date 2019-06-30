@@ -5,5 +5,7 @@
   "dns":["8.8.8.8","8.8.4.4"],
   "hostname":"netrunner",
   "broadcast":"11.255.255.255",
-  "server":"11.0.0.1"
+  "server":"11.0.0.1",
+  "netmask":"255.0.0.0",
+  "router": "11.0.0.1"
 }
