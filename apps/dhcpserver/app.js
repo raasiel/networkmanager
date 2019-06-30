@@ -7,28 +7,22 @@ var staticMap = require(staticMapPath);
 var configPath = path.normalize(__dirname + "/../../deploy/env/" + environment + "/config.json");
 var config = require (configPath);
 
-var s = dhcp.createServer({
-  // System settings
-  range: config.range,
-  static: staticMap,
- 
-  // Option settings (there are MUCH more)
-  netmask: config.netmask,
-  router: config.router,
-  dns:config.dns,
-  hostname:config.hostname,
-  //forceOptions: ["hostname"],
-  broadcast:config.broadcast,
-  server:config.server,
-  bootFile: function (req) {
-    console.log(["boot",req]);
-    if (req.clientId === 'foo bar') {
-      return 'x86linux.0';
-    } else {
-      return 'x64linux.0';
-    }
-  }
-});
+var options ={
+    // System settings
+    range: config.range,
+    static: staticMap,
+
+    // Option settings (there are MUCH more)
+    netmask: config.netmask,
+    router: config.router,
+    dns:config.dns,
+    hostname:config.hostname,
+    //forceOptions: ["hostname"],
+    broadcast:config.broadcast,
+    server:config.server
+};
+
+var s = dhcp.createServer(options);
 
  
 s.on('message', function(data) {
