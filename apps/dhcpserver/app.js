@@ -10,7 +10,7 @@ var config = require (configPath);
 var s = dhcp.createServer({
   // System settings
   range: config.range,
-  static: StaticDetermine,
+  static: staticMap,
  
   // Option settings (there are MUCH more)
   netmask: config.netmask,
