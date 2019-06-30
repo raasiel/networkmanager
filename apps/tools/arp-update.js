@@ -2,6 +2,10 @@ String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.split(search).join(replacement);
 };
+
+json
+
+
 const RosApi = require('node-routeros').RouterOSAPI;
 const fs = require ('fs');
 const conn = new RosApi({
@@ -28,4 +32,6 @@ conn.connect().then(() => {
     // Got an error while trying to connect
     console.log(err);
 });
+
+
 

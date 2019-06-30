@@ -3,35 +3,23 @@ var path = require('path');
 
 var environment = process.env.ENV || "office";
 var staticMapPath = path.normalize(__dirname + "/../../deploy/env/" + environment + "/static.json");
-console.log(["static path",staticMapPath]);
 var staticMap = require(staticMapPath);
-console.log(["static",staticMap]);
- 
-function StaticDetermine (clientMac, req){
-	console.log (["static" , clientMac, req]);
-	console.log("existing static determine")
-	return null;
-}
-
-var fnCallback = new StaticDetermine();
+var configPath = path.normalize(__dirname + "/../../deploy/env/" + environment + "/config.json");
+var config = require (configPath);
 
 var s = dhcp.createServer({
   // System settings
-  range: [
-    "11.10.214.50", "11.10.214.150"
-  ],
+  range: config.range,
   static: StaticDetermine,
  
   // Option settings (there are MUCH more)
-  netmask: '255.0.0.0',
-  router: [
-    '11.0.0.1'
-  ],
-  dns:["8.8.8.8","8.8.4.4"],
-  hostname:"netrunner",
+  netmask: config.netmask,
+  router: config.router,
+  dns:config.dns,
+  hostname:config.hostname,
   //forceOptions: ["hostname"],
-  broadcast:"11.255.255.255",
-  server:"11.0.0.1",
+  broadcast:config.broadcast,
+  server:config.server,
   bootFile: function (req) {
     console.log(["boot",req]);
     if (req.clientId === 'foo bar') {
@@ -41,8 +29,6 @@ var s = dhcp.createServer({
     }
   }
 });
-
-console.log(["dhcp.config",s["config"],s]);
 
  
 s.on('message', function(data) {
@@ -69,6 +55,6 @@ s.on("close", function() {
 
 s.listen();
 
-process.on('SIGINT', () => {
+process.on('SIGINT', ()=> {
   s.close();
 });
