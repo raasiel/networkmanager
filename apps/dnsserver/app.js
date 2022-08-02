@@ -1,21 +1,38 @@
-const dns2 = require('dns2');
+var path = require('path');
+var environment = process.env.ENV || "home";
+var configPath = path.normalize(__dirname + "/../../deploy/env/" + environment + "/dnsserver.config.json");
+var config = require(configPath);
+
+let dns2 = require('dns2');
+let clientOptions = {
+    dns: config.source.ip,
+    port: config.source.port
+};
 
 const { Packet } = dns2;
 
 const server = dns2.createServer({
     udp: true,
     handle: (request, send, rinfo) => {
-        const response = Packet.createResponseFromRequest(request);
-        const [ question ] = request.questions;
-        const { name } = question;
-        response.answers.push({
-            name,
-            type: Packet.TYPE.A,
-            class: Packet.CLASS.IN,
-            ttl: 300,
-            address: '8.8.8.8'
-        });
-        send(response);
+
+        let dns = new dns2(clientOptions);
+        (async () =>
+        {
+            if (config.interrupts[request.questions[0].name]!=null){
+                let response = Packet.createResponseFromRequest(request);
+                let [question] = request.questions;
+                let {name} = question;
+                send(response);
+            }
+            else {
+                let result = await dns.resolveA(request.questions[0].name);
+                let response = Packet.createResponseFromRequest(request);
+                let [question] = request.questions;
+                let {name} = question;
+                response.answers = result.answers;
+                send(response);
+            }
+        })();
     }
 });
 
@@ -35,18 +52,5 @@ server.on('close', () => {
     console.log('server closed');
 });
 
-server.listen({
-    // Optionally specify port, address and/or the family of socket() for udp server:
-    udp: {
-        port: 5333,
-        address: "127.0.0.1",
-        type: "udp4",  // IPv4 or IPv6 (Must be either "udp4" or "udp6")
-    },
-
-    // Optionally specify port and/or address for tcp server:
-    tcp: {
-        port: 5333,
-        address: "127.0.0.1",
-    },
-});
+server.listen(config.listen);
 

@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "dns2": "^2.0.5"
+  }
+}

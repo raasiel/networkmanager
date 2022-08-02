@@ -1,0 +1,22 @@
+{
+  "listen": {
+    "udp": {
+      "port": 5333,
+      "address": "127.0.0.1",
+      "type": "udp4"
+    },
+    "tcp": {
+      "port": 5333,
+      "address": "127.0.0.1"
+    }
+  },
+  "source" : {
+    "ip": "8.8.8.8",
+    "port" : 53
+  },
+  "interrupts" : {
+    "api.roblox.com" : {
+      "resonsetype": "reject"
+    }
+  }
+}
