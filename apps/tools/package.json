@@ -11,6 +11,6 @@
   "dependencies": {
     "mikronode": "^2.3.11",
     "node-routeros": "^1.6.2",
-    "terminal-kit": "^1.28.2"
+    "terminal-kit": "^2.1.8"
   }
 }
